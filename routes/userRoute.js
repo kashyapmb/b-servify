@@ -19,10 +19,9 @@ route.post("/login", login);
 route.get("/getall", getAll);
 route.get("/search/:email", searchByEmail);
 route.post("/updatepassword", updatePassword);
-
+route.get("/getone/:id", getOne);
 
 route.get("/logout", logout);
-route.get("/getone/:id", getOne);
 route.put("/update/:id", update);
 route.put("/updatewithlogintoken/:id", authMiddleware, updatewithlogintoken);
 route.delete("/delete/:id", deleteUser);

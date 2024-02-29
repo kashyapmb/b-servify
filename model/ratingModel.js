@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const reviewSchema = new mongoose.Schema({
+const ratingSchema = new mongoose.Schema({
   serviceProviderId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ServiceProvider",
+    ref: "provider",
     required: true,
   },
   userId: {
@@ -11,10 +11,10 @@ const reviewSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  reviews: {
-    type: String,
+  rating: {
+    type: Number,
     required: true,
   },
 });
 
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model("Rating", ratingSchema);

@@ -1,5 +1,5 @@
 import Review from "../model/reviewModel.js"
-import ServiceProvider from "../model/providerModel.js"
+import Provider from "../model/providerModel.js"
 
 export const createReview = async (req, res) => {
 	try {
@@ -17,7 +17,7 @@ export const getReviewsByServiceProvider = async (req, res) => {
 		const serviceProviderId = req.params.serviceProviderId
 
 		// Ensure that the service provider exists
-		const serviceProvider = await ServiceProvider.findById(serviceProviderId)
+		const serviceProvider = await Provider.findById(serviceProviderId)
 		if (!serviceProvider) {
 			return res.status(404).json({ msg: "Service provider not found" })
 		}

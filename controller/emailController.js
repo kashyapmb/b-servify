@@ -1,4 +1,4 @@
-import Providers from "../model/providerModel.js"
+import Provider from "../model/providerModel.js"
 import Review from "../model/reviewModel.js"
 import User from "../model/userModel.js"
 import mongoose from "mongoose" // Import mongoose
@@ -22,7 +22,7 @@ export const signIn = async (req, res) => {
 	const { email, password } = req.body
 	try {
 		// Find user by email
-		const user = await Providers.findOne({ email })
+		const user = await Provider.findOne({ email })
 
 		// Check if user exists and password is correct
 		if (!user || !(await comparePasswords(password, user.password)) ) {
@@ -41,7 +41,7 @@ export const signIn = async (req, res) => {
 // Create Service Provider
 export const createServiceProvider = async (req, res) => {
 	try {
-		const serviceProviderData = new Providers(req.body)
+		const serviceProviderData = new Provider(req.body)
 		if (!serviceProviderData) {
 			return res.status(404).json({ msg: "Service provider data not found" })
 		}
@@ -56,7 +56,7 @@ export const createServiceProvider = async (req, res) => {
 // Get all Provider's details
 export const getAllServiceProviders = async (req, res) => {
 	try {
-		const serviceProviderData = await Providers.find()
+		const serviceProviderData = await Provider.find()
 		if (!serviceProviderData) {
 			return res.status(404).json({ msg: "Service provider data not found" })
 		}
@@ -70,7 +70,7 @@ export const getAllServiceProviders = async (req, res) => {
 export const getOneServiceProvider = async (req, res) => {
 	try {
 		const id = req.params.id
-		const userExist = await Providers.findById(id)
+		const userExist = await Provider.findById(id)
 		if (!userExist) {
 			return res.status(404).json({ msg: "service provider data not found" })
 		}
@@ -84,7 +84,7 @@ export const getOneServiceProvider = async (req, res) => {
 export const updateServiceProvider = async (req, res) => {
 	try {
 		const id = req.params.id
-		const userExist = await Providers.findById(id)
+		const userExist = await Provider.findById(id)
 		if (!userExist) {
 			return res.status(404).json({ msg: "serviceprovider data not found" })
 		}
@@ -111,7 +111,7 @@ export const updateServiceProvider = async (req, res) => {
 export const deleteServiceProvider = async (req, res) => {
 	try {
 		const id = req.params.id
-		const serviceProviderExist = await Providers.findById(id)
+		const serviceProviderExist = await Provider.findById(id)
 
 		if (!serviceProviderExist) {
 			return res.status(404).json({ msg: "Service provider not found" })
@@ -161,7 +161,7 @@ export const deleteServiceProvider = async (req, res) => {
 		await deletedServiceProvider.save()
 
 		// Delete the service provider and associated reviews
-		await Providers.findByIdAndDelete(id)
+		await Provider.findByIdAndDelete(id)
 		await Review.deleteMany({ serviceProviderId: id })
 
 		res.status(200).json({ msg: "Service provider deleted successfully" })
@@ -187,7 +187,7 @@ export const SearchServiceProvider_byservice = async (req, res) => {
 				// },
 			],
 		}
-		const filterData = await Providers.find(filter)
+		const filterData = await Provider.find(filter)
 		if (filterData.length === 0) {
 			res.status(404).json({ msg: "Data not found" })
 		}
@@ -201,7 +201,7 @@ export const SearchServiceProvider_byservice = async (req, res) => {
 export const getServiceProviderByServiceName = async (req, res) => {
 	try {
 		const { serviceName } = req.params
-		const serviceProvider = await Providers.find({
+		const serviceProvider = await Provider.find({
 			spservicename: serviceName,
 		})
 
@@ -216,7 +216,7 @@ export const getServiceProviderByServiceName = async (req, res) => {
 		res.status(500).json({ error: error.message })
 	}
 }
-// localhost:8000/api/service-providers/getallquery/carpenter
+// localhost:8000/api/service-provider/getallquery/carpenter
 
 // export const addReviewToServiceProvider = async (req, res) => {
 //   try {
@@ -265,7 +265,7 @@ export const addReviewToServiceProvider = async (req, res) => {
 			})
 		}
 
-		const serviceProvider = await Providers.findById(serviceProviderId)
+		const serviceProvider = await Provider.findById(serviceProviderId)
 		if (!serviceProvider) {
 			return res.status(404).json({ msg: "Service provider not found" })
 		}
@@ -282,7 +282,7 @@ export const addReviewToServiceProvider = async (req, res) => {
 		})
 		const savedReview = await review.save()
 
-		const updatedServiceProvider = await Providers.findByIdAndUpdate(
+		const updatedServiceProvider = await Provider.findByIdAndUpdate(
 			serviceProviderId,
 			{ $push: { reviews: savedReview._id } },
 			{ new: true }
@@ -293,7 +293,7 @@ export const addReviewToServiceProvider = async (req, res) => {
 		res.status(500).json({ error: error.message })
 	}
 }
-// POST localhost:8000/api/service-providers/SP_ID/reviews
+// POST localhost:8000/api/service-provider/SP_ID/reviews
 
 // {
 //   "userId": "USER_ID",
@@ -306,7 +306,7 @@ export const getReviewsByServiceProviderAndUser = async (req, res) => {
 		const { serviceProviderId, userId } = req.params
 
 		// Ensure that the service provider and user exist
-		const serviceProvider = await Providers.findById(serviceProviderId)
+		const serviceProvider = await Provider.findById(serviceProviderId)
 		const user = await User.findById(userId)
 
 		if (!serviceProvider || !user) {
@@ -341,4 +341,4 @@ export const getReviewsByServiceProviderAndUser = async (req, res) => {
 		res.status(500).json({ error: error.message })
 	}
 }
-//GET http://localhost:8000/api/service-providers/SP_ID/reviews/USER_ID
+//GET http://localhost:8000/api/service-provider/SP_ID/reviews/USER_ID

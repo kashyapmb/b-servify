@@ -1,4 +1,4 @@
-import user from "../model/userModel.js";
+import User from "../model/userModel.js";
 import Review from "../model/reviewModel.js";
 import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -19,7 +19,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     // Find user by email
-    const userExist = await user.findOne({ email });
+    const userExist = await User.findOne({ email });
     if (!userExist) {
       return res.status(401).json({ error: "Email not exist" });
     }
@@ -51,7 +51,7 @@ export const create = async (req, res) => {
     const { fname, lname, mobile, email, password } = req.body;
 
     // Check if the email is already in use
-    const existingUser = await user.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
     }
@@ -60,7 +60,7 @@ export const create = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create a new user object with the hashed password
-    const newUser = new user({
+    const newUser = new User({
       fname,
       lname,
       mobile,
@@ -93,7 +93,7 @@ export const create = async (req, res) => {
 //for fetching all record
 export const getAll = async (req, res) => {
   try {
-    const userData = await user.find();
+    const userData = await User.find();
     if (!userData) {
       return res.status(404).json({ msg: "user data not found" });
     }
@@ -107,7 +107,7 @@ export const getAll = async (req, res) => {
 export const searchByEmail = async (req, res) => {
   try {
     const email = req.params.email; // Corrected variable name
-    const userExist = await user.find({ email });
+    const userExist = await User.find({ email });
     if (!userExist || userExist.length === 0) {
       // Check if userExist is empty
       return res.status(404).json({ msg: "Email does not exist" });
@@ -124,7 +124,7 @@ export const updatePassword = async (req, res) => {
     const { email, newPassword } = req.body;
 
     // Check if the email exists in the user collection
-    const existingUser = await user.findOne({ email });
+    const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       return res.status(404).json({ msg: "User not found" });
@@ -148,21 +148,22 @@ export const updatePassword = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await user.findById(id);
+    const userExist = await User.findById(id);
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
     res.status(200).json(userExist);
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ msg: "User not  found" });
   }
 };
+
 
 //for updating data
 export const update = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await user.findById(id);
+    const userExist = await User.findById(id);
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
@@ -171,7 +172,7 @@ export const update = async (req, res) => {
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       req.body.password = hashedPassword;
     }
-    const updatedData = await user.findByIdAndUpdate(id, req.body, {
+    const updatedData = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     // await Review.updateMany(
@@ -195,11 +196,11 @@ export const update = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await user.findById(id);
+    const userExist = await User.findById(id);
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
-    await user.findByIdAndDelete(id);
+    await User.findByIdAndDelete(id);
 
     res.status(200).json({ msg: "user deleted successfully" });
   } catch (error) {
@@ -223,7 +224,7 @@ export const logout = async (req, res) => {
 export const updatewithlogintoken = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await user.findById(id);
+    const userExist = await User.findById(id);
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
@@ -232,7 +233,7 @@ export const updatewithlogintoken = async (req, res) => {
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       req.body.password = hashedPassword;
     }
-    const updatedData = await user.findByIdAndUpdate(id, req.body, {
+    const updatedData = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     });
 

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import Review from "./reviewModel.js"; // Import the Review model
-import bcrypt from "bcrypt";
+import moment from "moment-timezone";
 const userSchema = new mongoose.Schema({
   fname: {
     type: String,
@@ -14,14 +13,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // address: {
-  //   type: String,
-  //   required: true,
-  // },
-  // city: {
-  //   type: String,
-  //   required: true,
-  // },
+  address: {
+    type: String,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
   email: {
     type: String,
     required: true,
@@ -44,19 +43,11 @@ const userSchema = new mongoose.Schema({
       message: "password must be greter than 6 character",
     },
   },
+  created: {
+    type: String,
+    default: () =>
+      moment(new Date()).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm:ss A"),
+  },
 });
 
-// userSchema.pre("save", async function (next) {
-//   const user = this;
-//   if (!user.isModified("password")) return next();
-//   try {
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(user.password, salt);
-//     user.password = hashedPassword;
-//     next();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-export default mongoose.model("user", userSchema);
+export default mongoose.model("User", userSchema);

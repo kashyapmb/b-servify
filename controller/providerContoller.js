@@ -80,6 +80,47 @@ export const createServiceProvider = async (req, res) => {
   }
 };
 
+//for updating password
+export const updatePassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Check if the email exists in the user collection
+    const existingUser = await Provider.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Generate a new hashed password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update user's password in the database
+    existingUser.password = hashedPassword;
+    await existingUser.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//for fetching one perticular record
+export const searchByEmail = async (req, res) => {
+  try {
+    const email = req.params.email; // Corrected variable name
+    const userExist = await Provider.find({ email });
+    if (!userExist || userExist.length === 0) {
+      // Check if userExist is empty
+      return res.status(404).json({ msg: "Email does not exist" });
+    }
+    res.status(200).json({ msg: "Email exist" });
+  } catch (error) {
+    res.status(500).json({ error: error }); // Use error.message to get a more descriptive error message
+  }
+};
+
 // Get all Provider's details
 export const getAllServiceProviders = async (req, res) => {
   try {

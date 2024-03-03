@@ -121,10 +121,13 @@ export const searchByEmail = async (req, res) => {
   }
 };
 
-// Get all Provider's details
-export const getAllServiceProviders = async (req, res) => {
+// Get Provider's based on city and profession
+export const getServiceProviders = async (req, res) => {
   try {
-    const serviceProviderData = await Provider.find();
+    const { city, domain } = req.body;
+    const serviceProviderData = await Provider.find({
+      $and: [{ city }, { domain }],
+    }).select("-password");
     if (!serviceProviderData) {
       return res.status(404).json({ msg: "Service provider data not found" });
     }
@@ -143,6 +146,19 @@ export const getOneServiceProvider = async (req, res) => {
       return res.status(404).json({ msg: "service provider data not found" });
     }
     res.status(200).json(userExist);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+// Get all Provider's details
+export const getAllServiceProviders = async (req, res) => {
+  try {
+    const serviceProviderData = await Provider.find();
+    if (!serviceProviderData) {
+      return res.status(404).json({ msg: "Service provider data not found" });
+    }
+    res.status(200).json(serviceProviderData);
   } catch (error) {
     res.status(500).json({ error: error });
   }

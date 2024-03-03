@@ -12,15 +12,17 @@ import {
 	signIn,
 	searchByEmail,
 	updatePassword,
+	getServiceProviders,
 } from "../controller/providerContoller.js"
 const route = express.Router()
 
 route.post("/create", createServiceProvider)
-route.get("/search/:email", searchByEmail)
 route.post("/updatepassword", updatePassword)
+route.get("/search/:email", searchByEmail)
+route.post("/getproviders", getServiceProviders)
+route.get("/getone/:id", getOneServiceProvider)
 
 route.put("/update/:id", updateServiceProvider)
-route.get("/getone/:id", getOneServiceProvider)
 route.post("/signin", signIn)
 route.get("/getall", getAllServiceProviders)
 route.delete("/delete/:id", deleteServiceProvider)

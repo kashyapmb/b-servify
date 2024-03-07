@@ -41,6 +41,7 @@ import http from "http"; // Import the http module
 import { Server } from "socket.io"; // Import the Server class from socket.io
 import userRoute from "./routes/userRoute.js";
 import serviceProviderRoute from "./routes/providerRoute.js";
+import favoriteRoute from "./routes/favoriteRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import cookieParser from "cookie-parser";
 import nodemailer from "nodemailer";
@@ -87,6 +88,7 @@ io.on("connection", (socket) => {
 app.use("/api/user", userRoute);
 app.use("/api/provider", serviceProviderRoute);
 app.use("/api/reviews", reviewRoute);
+app.use("/api/utils", favoriteRoute);
 
 // // Dummy database for storing email verification tokens
 // const users = {}
@@ -209,3 +211,4 @@ const authenticateToken = (req, res, next) => {
 app.get("/api/user/details", authenticateToken, (req, res) => {
   res.json({ message: "Access granted", user: req.user });
 });
+

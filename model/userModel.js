@@ -13,13 +13,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profilePhoto: {
+    type: String,
+    default:
+      "https://firebasestorage.googleapis.com/v0/b/theservify-e1a5a.appspot.com/o/d188a147-120c-4c70-af3e-464488fb0419?alt=media&token=6fc004b1-4a6c-4385-90aa-14337397c446",
+  },
   address: {
     type: String,
-    required: false,
+    default: "",
   },
   city: {
     type: String,
-    required: false,
+    default: "",
   },
   email: {
     type: String,

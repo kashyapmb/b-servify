@@ -10,6 +10,7 @@ import {
   updatewithlogintoken,
   searchByEmail,
   updatePassword,
+  updateUserDetails,
 } from "../controller/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 const route = express.Router();
@@ -20,6 +21,7 @@ route.get("/getall", getAll);
 route.get("/search/:email", searchByEmail);
 route.post("/updatepassword", updatePassword);
 route.get("/getone/:id", getOne);
+route.put("/updateDetails/:id", updateUserDetails);
 
 route.get("/logout", logout);
 route.put("/update/:id", update);

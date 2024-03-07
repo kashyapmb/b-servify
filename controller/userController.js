@@ -148,7 +148,7 @@ export const updatePassword = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await User.findById(id);
+    const userExist = await User.findById(id).select("-password");
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
@@ -158,6 +158,23 @@ export const getOne = async (req, res) => {
   }
 };
 
+//for updating data
+export const updateUserDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userExist = await User.findById(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "user data not found" });
+    }
+    console.log(req.body)
+    const updatedData = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
 
 //for updating data
 export const update = async (req, res) => {

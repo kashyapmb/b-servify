@@ -166,7 +166,6 @@ export const updateUserDetails = async (req, res) => {
     if (!userExist) {
       return res.status(404).json({ msg: "user data not found" });
     }
-    console.log(req.body)
     const updatedData = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     });

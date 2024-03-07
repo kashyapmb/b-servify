@@ -154,6 +154,24 @@ export const getOneServiceProvider = async (req, res) => {
   }
 };
 
+//for updating data
+export const updateProviderDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userExist = await Provider.findById(id);
+    console.log(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "Provider data not found" });
+    }
+    const updatedData = await Provider.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
 // Get all Provider's details
 export const getAllServiceProviders = async (req, res) => {
   try {
@@ -175,7 +193,7 @@ export const updateServiceProvider = async (req, res) => {
     if (!userExist) {
       return res.status(404).json({ msg: "serviceprovider data not found" });
     }
-    const updatedData = await ServiceProvider.findByIdAndUpdate(id, req.body, {
+    const updatedData = await Provider.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     // await Review.updateMany(

@@ -172,10 +172,51 @@ export const updateProviderDetails = async (req, res) => {
   }
 };
 
+//for updating data
+export const mobileVerified = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userExist = await Provider.findById(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "Provider data not found" });
+    }
+
+    // Update the mobileverified field to true
+    const updatedData = await Provider.findByIdAndUpdate(
+      id,
+      { mobileverified: true }, // Update only the mobileverified field
+      { new: true } // Return the updated document
+    );
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+//for updating data
+export const emailVerified = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userExist = await Provider.findById(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "Provider data not found" });
+    }
+
+    // Update the mobileverified field to true
+    const updatedData = await Provider.findByIdAndUpdate(
+      id,
+      { emailverified: true }, // Update only the mobileverified field
+      { new: true } // Return the updated document
+    );
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
 // Get all Provider's details
 export const getAllServiceProviders = async (req, res) => {
   try {
-    const serviceProviderData = await Provider.find();
+    const serviceProviderData = await Provider.find().select("-password");
     if (!serviceProviderData) {
       return res.status(404).json({ msg: "Service provider data not found" });
     }

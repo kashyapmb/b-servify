@@ -43,10 +43,14 @@ import userRoute from "./routes/userRoute.js";
 import serviceProviderRoute from "./routes/providerRoute.js";
 import favoriteRoute from "./routes/favoriteRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
+import adminRoute from "./routes/adminRoute.js";
 import cookieParser from "cookie-parser";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import twilio from "twilio";
+import readline from "readline";
+
 // import sendEmail from "./utils/sendEmail.js"
 
 const app = express();
@@ -89,6 +93,7 @@ app.use("/api/user", userRoute);
 app.use("/api/provider", serviceProviderRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/utils", favoriteRoute);
+app.use("/api/admin", adminRoute);
 
 // // Dummy database for storing email verification tokens
 // const users = {}
@@ -212,3 +217,31 @@ app.get("/api/user/details", authenticateToken, (req, res) => {
   res.json({ message: "Access granted", user: req.user });
 });
 
+
+app.post("/sendOTP", async (req, res) => {
+  try {
+    const { mobile } = req.body;
+    const client = twilio(process.env.accountSid, process.env.authToken);
+    const verification = await client.verify.v2.services(process.env.verifySid).verifications.create({ to: mobile, channel: "sms" });
+    console.log(verification.status);
+    return res.status(200).json({ message: "OTP sent" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to send OTP" });
+  }
+});
+app.post("/enterotp", async (req, res) => {
+  try {
+    const { mobile, otp } = req.body;
+    const client = twilio(process.env.accountSid, process.env.authToken);
+    const verification_check = await client.verify.v2.services(process.env.verifySid).verificationChecks.create({ to: mobile, code: otp });
+    console.log(verification_check.valid);
+    if (verification_check.valid)
+      return res.status(202).json({ message: "Correct Password" });
+    else
+      return res.status(401).json({ message: "Incorrect Password" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to verify OTP" });
+  }
+});

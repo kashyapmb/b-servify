@@ -82,7 +82,7 @@ export const isFavorite = async (req, res) => {
 
     // If the favorite list doesn't exist, return false
     if (!favorite) {
-      return res.status(404).json({
+      return res.status(200).json({
         success: false,
         message: "Favorite list not found for the user",
       });

@@ -14,6 +14,8 @@ import {
   updatePassword,
   getServiceProviders,
   updateProviderDetails,
+  mobileVerified,
+  emailVerified,
 } from "../controller/providerContoller.js";
 const route = express.Router();
 
@@ -23,10 +25,12 @@ route.get("/search/:email", searchByEmail);
 route.post("/getproviders", getServiceProviders);
 route.get("/getone/:id", getOneServiceProvider);
 route.put("/updateDetails/:id", updateProviderDetails);
+route.put("/mobileVerified/:id", mobileVerified);
+route.put("/emailVerified/:id", emailVerified);
+route.get("/getall", getAllServiceProviders);
 
 route.put("/update/:id", updateServiceProvider);
 route.post("/signin", signIn);
-route.get("/getall", getAllServiceProviders);
 route.delete("/delete/:id", deleteServiceProvider);
 route.post("/search", SearchServiceProvider_byservice);
 route.get("/getallquery/:serviceName", getServiceProviderByServiceName);

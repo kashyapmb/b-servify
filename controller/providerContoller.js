@@ -7,6 +7,26 @@ import jwt from "jsonwebtoken";
 
 import bcrypt from "bcrypt";
 
+export const updateOverallRating = async () => {
+  try {
+    // Fetch all providers
+    const providers = await Provider.find();
+
+    // Iterate through each provider
+    for (const provider of providers) {
+      // Update the provider's overallRating field
+      provider.overallRating = 0;
+
+      // Save the updated provider
+      await provider.save();
+    }
+
+    console.log("Overall ratings updated successfully for all providers.");
+  } catch (error) {
+    console.error("Error updating overall ratings:", error);
+  }
+};
+
 // Sign in
 const comparePasswords = async (inputPassword, hashedPassword) => {
   try {

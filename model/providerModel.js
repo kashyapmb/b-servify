@@ -3,7 +3,6 @@ import Review from "./reviewModel.js"; // Import the Review model
 import bcrypt from "bcrypt";
 import moment from "moment-timezone";
 
-
 const providerSchema = new mongoose.Schema({
   fname: {
     type: String,
@@ -63,7 +62,11 @@ const providerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-
+  overallRating: {
+    type: Number,
+    default: 0,
+    required: false,
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import moment from "moment-timezone";
 
 const reviewSchema = new mongoose.Schema({
-  serviceProviderId: {
+  ProviderId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ServiceProvider",
+    ref: "provider",
     required: true,
   },
   userId: {
@@ -11,9 +12,18 @@ const reviewSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  reviews: {
+  review: {
     type: String,
     required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  created: {
+    type: String,
+    default: () =>
+      moment(new Date()).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm:ss A"),
   },
 });
 

@@ -16,8 +16,12 @@ import {
   updateProviderDetails,
   mobileVerified,
   emailVerified,
+  updateOverallRating,
 } from "../controller/providerContoller.js";
 const route = express.Router();
+
+route.post("/temp", updateOverallRating);
+
 
 route.post("/create", createServiceProvider);
 route.post("/updatepassword", updatePassword);

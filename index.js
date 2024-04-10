@@ -50,6 +50,12 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import twilio from "twilio";
 import readline from "readline";
+import enquiryRoute from "./routes/enquiryRoute.js";
+import searchuserRoute from "./routes/serchuserRoute.js";
+import filterRoute from "./routes/filterRoute.js";
+import dashboardRoute from "./routes/dashboardRoute.js";
+import providerPaymentRoute from "./routes/providerPaymentRoute.js";
+
 
 // import sendEmail from "./utils/sendEmail.js"
 
@@ -94,6 +100,12 @@ app.use("/api/provider", serviceProviderRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/utils", favoriteRoute);
 app.use("/api/admin", adminRoute);
+
+app.use("/api/enquiry", enquiryRoute);
+app.use("/api/search", searchuserRoute);
+app.use("/api/payment", providerPaymentRoute);
+app.use("/api/filter", filterRoute);
+app.use("/api/dashboard", dashboardRoute);
 
 // // Dummy database for storing email verification tokens
 // const users = {}
@@ -217,12 +229,13 @@ app.get("/api/user/details", authenticateToken, (req, res) => {
   res.json({ message: "Access granted", user: req.user });
 });
 
-
 app.post("/sendOTP", async (req, res) => {
   try {
     const { mobile } = req.body;
     const client = twilio(process.env.accountSid, process.env.authToken);
-    const verification = await client.verify.v2.services(process.env.verifySid).verifications.create({ to: mobile, channel: "sms" });
+    const verification = await client.verify.v2
+      .services(process.env.verifySid)
+      .verifications.create({ to: mobile, channel: "sms" });
     console.log(verification.status);
     return res.status(200).json({ message: "OTP sent" });
   } catch (err) {
@@ -234,12 +247,13 @@ app.post("/enterotp", async (req, res) => {
   try {
     const { mobile, otp } = req.body;
     const client = twilio(process.env.accountSid, process.env.authToken);
-    const verification_check = await client.verify.v2.services(process.env.verifySid).verificationChecks.create({ to: mobile, code: otp });
+    const verification_check = await client.verify.v2
+      .services(process.env.verifySid)
+      .verificationChecks.create({ to: mobile, code: otp });
     console.log(verification_check.valid);
     if (verification_check.valid)
       return res.status(202).json({ message: "Correct Password" });
-    else
-      return res.status(401).json({ message: "Incorrect Password" });
+    else return res.status(401).json({ message: "Incorrect Password" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Failed to verify OTP" });

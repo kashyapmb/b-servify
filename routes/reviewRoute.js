@@ -1,12 +1,24 @@
 import express from "express";
 import {
-  createReview,
-  getReviewsByServiceProvider,
+  giveReview,
+  getReviews,
+  getRatings,
+  getReviewswithspecificuser,
+  getRatingReviewofuser,
+  checkreview,
+  updateReview,
+  getReviewId,
 } from "../controller/reviewController.js";
 
 const route = express.Router();
 
-route.post("/create", createReview);
-route.get("/service-providers/:serviceProviderId", getReviewsByServiceProvider);
+route.post("/:id", giveReview);
+route.get("/getreviews/:id", getReviews);
+route.get("/getratings/:id", getRatings);
+route.get("/getReviewId/:userId/:providerId", getReviewId);
+route.post("/getReviewswithspecificuser/:id", getReviewswithspecificuser);
+route.get("/:providerId/:userId", getRatingReviewofuser);
+route.get("/check/:providerId/:userId", checkreview);
+route.put("/update/:reviewId", updateReview);
 
 export default route;

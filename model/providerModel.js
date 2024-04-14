@@ -33,6 +33,10 @@ const providerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  state: {
+    type: String,
+    required: true,
+  },
   city: {
     type: String,
     required: true,
@@ -67,6 +71,16 @@ const providerSchema = new mongoose.Schema({
     default: 0,
     required: false,
   },
+  approved: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+  visitcharge: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -84,6 +98,7 @@ const providerSchema = new mongoose.Schema({
     default:
       "https://firebasestorage.googleapis.com/v0/b/theservify-e1a5a.appspot.com/o/d188a147-120c-4c70-af3e-464488fb0419?alt=media&token=6fc004b1-4a6c-4385-90aa-14337397c446",
   },
+
   bgPhoto: [{ type: String }],
   created: {
     type: String,

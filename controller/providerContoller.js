@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 import bcrypt from "bcrypt";
 
-export const updateOverallRating = async () => {
+export const temp = async () => {
   try {
     // Fetch all providers
     const providers = await Provider.find();
@@ -15,7 +15,8 @@ export const updateOverallRating = async () => {
     // Iterate through each provider
     for (const provider of providers) {
       // Update the provider's overallRating field
-      provider.overallRating = 0;
+
+      provider.visitcharge = Math.floor(Math.random() * 100) * 10 ;
 
       // Save the updated provider
       await provider.save();
@@ -62,7 +63,7 @@ export const signIn = async (req, res) => {
     );
 
     // Send token to client
-    res.json({ token });
+    res.json({ token, approved: user.approved });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });

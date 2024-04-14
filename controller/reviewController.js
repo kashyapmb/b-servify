@@ -310,3 +310,19 @@ export const getRatings = async (req, res) => {
   }
 };
 //get localhost:8000/api/reviews/getratings/PROVIDER_ID
+
+export const countReviews = async (req, res) => {
+  try {
+    const providerId = req.params.id;
+
+    const allReviews = await Review.find({ ProviderId: providerId });
+    const count = allReviews.length;
+    res.status(200).json({ count: count });
+    // Format the response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+};

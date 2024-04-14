@@ -16,12 +16,15 @@ import {
   updateProviderDetails,
   mobileVerified,
   emailVerified,
-  updateOverallRating,
+  temp,
 } from "../controller/providerContoller.js";
+import {
+  getAllServiceProvidersAlgo,
+  getAllServiceProvidersRating,
+} from "../controller/monitizationalgoController.js";
 const route = express.Router();
 
-route.post("/temp", updateOverallRating);
-
+route.get("/temp", temp);
 
 route.post("/create", createServiceProvider);
 route.post("/updatepassword", updatePassword);
@@ -43,5 +46,8 @@ route.get(
   "/:serviceProviderId/reviews/:userId",
   getReviewsByServiceProviderAndUser
 );
+
+route.post("/getprovidersalgo", getAllServiceProvidersAlgo);
+route.post("/getprovidersRating", getAllServiceProvidersRating);
 
 export default route;

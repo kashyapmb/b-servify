@@ -16,7 +16,7 @@ export const temp = async () => {
     for (const provider of providers) {
       // Update the provider's overallRating field
 
-      provider.visitcharge = Math.floor(Math.random() * 100) * 10 ;
+      provider.visitcharge = Math.floor(Math.random() * 100) * 10;
 
       // Save the updated provider
       await provider.save();
@@ -184,6 +184,24 @@ export const updateProviderDetails = async (req, res) => {
     if (!userExist) {
       return res.status(404).json({ msg: "Provider data not found" });
     }
+    const updatedData = await Provider.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+//for updating data
+export const providerApproved = async (req, res) => {
+  try {
+    const id = req.body._id;
+    const userExist = await Provider.findById(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "Provider data not found" });
+    }
+
+    req.body.approved = true;
     const updatedData = await Provider.findByIdAndUpdate(id, req.body, {
       new: true,
     });

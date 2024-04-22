@@ -17,6 +17,7 @@ import {
   mobileVerified,
   emailVerified,
   temp,
+  providerApproved,
 } from "../controller/providerContoller.js";
 import {
   getAllServiceProvidersAlgo,
@@ -35,6 +36,7 @@ route.put("/updateDetails/:id", updateProviderDetails);
 route.put("/mobileVerified/:id", mobileVerified);
 route.put("/emailVerified/:id", emailVerified);
 route.get("/getall", getAllServiceProviders);
+route.post("/providerApproved", providerApproved);
 
 route.put("/update/:id", updateServiceProvider);
 route.post("/signin", signIn);
